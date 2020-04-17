@@ -1,0 +1,113 @@
+{
+  "Comment": "An example of the Amazon States Language that runs an AWS Batch job and monitors the job until it completes.",
+  "StartAt": "Create Segment",
+  "States": {
+    "Create Segment": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:HelloWorldFunction",
+      "ResultPath": "$.guid",
+      "Next": "Wait For Segment",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ]
+    },
+    "Wait For Segment": {
+      "Type": "Wait",
+      "SecondsPath": "$.wait_time",
+      "Next": "Get Segment Status"
+    },
+    "Get Segment Status": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:HelloWorldFunction",
+      "Next": "Segment Created?",
+      "InputPath": "$.guid",
+      "ResultPath": "$.status",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ]
+    },
+    "Segment Created?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.status",
+          "StringEquals": "FAILED",
+          "Next": "Slack"
+        },
+        {
+          "Variable": "$.status",
+          "StringEquals": "SUCCEEDED",
+          "Next": "Create Campaign"
+        }
+      ],
+      "Default": "Wait For Segment"
+    },
+    "Slack": {
+      "Type": "Fail",
+      "Cause": "AWS Batch Job Failed",
+      "Error": "DescribeJob returned FAILED"
+    },
+    "Create Campaign": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:HelloWorldFunction",
+      "ResultPath": "$.guid",
+      "Next": "Wait For Campaign"
+    },
+    "Wait For Campaign": {
+      "Type": "Wait",
+      "SecondsPath": "$.wait_time",
+      "Next": "Get Campaign Status"
+    },
+    "Get Campaign Status": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:HelloWorldFunction",
+      "Next": "Campaign Success?",
+      "InputPath": "$.guid",
+      "ResultPath": "$.status",
+      "Retry": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "IntervalSeconds": 1,
+          "MaxAttempts": 3,
+          "BackoffRate": 2
+        }
+      ]
+    },
+    "Campaign Success?": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.status",
+          "StringEquals": "FAILED",
+          "Next": "Slack"
+        },
+        {
+          "Variable": "$.status",
+          "StringEquals": "SUCCEEDED",
+          "Next": "Create Campaign Report"
+        }
+      ],
+      "Default": "Wait For Campaign"
+    },
+    "Create Campaign Report": {
+      "Type": "Succeed"
+    }
+  }
+}
+

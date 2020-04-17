@@ -1,0 +1,27 @@
+{
+  "name": "bayview",
+  "version": "1.0.0",
+  "description": "Install java also Docker setup How to Install Docker On Ubuntu 18.04 {2020 Tutorial} Post-installation steps for Linux sudo apt-get update sudo apt install docker.io sudo systemctl start docker sudo systemctl enable docker sudo groupadd docker sudo usermod -aG docker $USER newgrp docker",
+  "main": "setMachine.js",
+  "dependencies": {
+    "aws-sdk": "^2.657.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "sam build",
+    "start-step-function": "java -jar jar/StepFunctionsLocal.jar --lambda-endpoint http://localhost:3001",
+    "start-lambda": "sam local start-lambda",
+    "set-machine": "node setMachine.js",
+    "start-machine": "aws stepfunctions --endpoint http://localhost:8083 start-execution --state-machine arn:aws:states:us-east-1:123456789012:stateMachine:bayview --name test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dev-hitesh-gupta/bayview.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dev-hitesh-gupta/bayview/issues"
+  },
+  "homepage": "https://github.com/dev-hitesh-gupta/bayview#readme"
+}

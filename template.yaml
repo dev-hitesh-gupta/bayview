@@ -4,7 +4,7 @@ Description: >
   bayview
 
   Sample SAM Template for bayview
-  
+
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
@@ -17,12 +17,56 @@ Resources:
       CodeUri: hello-world/
       Handler: app.lambdaHandler
       Runtime: nodejs12.x
+      MemorySize: 3008
+      Timeout: 900
       Events:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             Path: /hello
             Method: get
+  CreateFileFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: create-lambda/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      MemorySize: 3008
+      Timeout: 900
+  CreateSegmentFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: create-segment/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      MemorySize: 3008
+      Timeout: 900
+  CheckStatusFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: check-status/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      MemorySize: 3008
+      Timeout: 900
+  CreateCampaginFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: create-campagin/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      MemorySize: 3008
+      Timeout: 900
+  CreateRecordsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: create-records/
+      Handler: app.lambdaHandler
+      Runtime: nodejs12.x
+      MemorySize: 3008
+      Timeout: 900
+
+
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

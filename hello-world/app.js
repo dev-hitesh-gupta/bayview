@@ -14,8 +14,12 @@ let response;
  * @returns {Object} object - API Gateway Lambda Proxy Output Format
  * 
  */
+
+
 exports.lambdaHandler = async (event, context) => {
     try {
+        console.log('ENV:',process.env.APP_ID)
+        console.log('EVENT:',event.name)
         // const ret = await axios(url);
         response = {
             'statusCode': 200,

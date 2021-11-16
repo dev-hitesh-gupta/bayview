@@ -4,7 +4,7 @@
   "description": "Install java also Docker setup How to Install Docker On Ubuntu 18.04 {2020 Tutorial} Post-installation steps for Linux sudo apt-get update sudo apt install docker.io sudo systemctl start docker sudo systemctl enable docker sudo groupadd docker sudo usermod -aG docker $USER newgrp docker",
   "main": "setMachine.js",
   "dependencies": {
-    "aws-sdk": "^2.657.0"
+    "aws-sdk": "^2.814.0"
   },
   "devDependencies": {},
   "scripts": {
